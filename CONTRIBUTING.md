@@ -41,7 +41,27 @@ OPENSHELF_DATA_DIR=/tmp/openshelf-dev openshelf run
 - No inline `<script>` or `style=""` in templates: the Content-Security-Policy
   forbids them. Put scripts and styles in `static/`.
 
-## License of contributions
+## Contributor License Agreement
 
-By submitting a contribution you agree that it is licensed under the same
-license as the project, AGPL-3.0-or-later.
+OpenShelf is released under AGPL-3.0-or-later, and the maintainer also offers
+it under other terms (for example in a commercial edition). To allow that,
+every contributor signs the [Contributor License Agreement](CLA.md) once.
+
+- **You keep the copyright** in your work.
+- You give the maintainer a broad license to use it, including in commercial
+  versions.
+- The maintainer promises that the open-source version stays open source.
+
+When you open your first pull request, a bot comments with the instructions.
+Reply with exactly this sentence to sign:
+
+```
+I have read the CLA Document and I hereby sign the CLA
+```
+
+Your signature is stored once and covers all your future pull requests. If you
+are contributing on behalf of a company, read section 8 of the CLA first.
+
+## Reporting security problems
+
+See [SECURITY.md](SECURITY.md).

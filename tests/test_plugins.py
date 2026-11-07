@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# Copyright (C) 2026 kettalevi
+# Copyright (C) 2026 Martin Levi Ketta
 """The plugin API is what the commercial edition builds on, so test it well."""
 
 import pytest
