@@ -1,0 +1,17 @@
+services:
+  openshelf:
+    build: .
+    ports:
+      # Bound to localhost only. Put a reverse proxy with HTTPS in front of it
+      # (see README) before exposing OpenShelf to a network.
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - openshelf-data:/data
+    environment:
+      OPENSHELF_CURRENCY: "$"
+      # Set to "true" once you serve it over HTTPS:
+      # OPENSHELF_HTTPS_ONLY: "true"
+    restart: unless-stopped
+
+volumes:
+  openshelf-data:

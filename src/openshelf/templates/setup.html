@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Set up{% endblock %}
+{% block content %}
+<section class="card narrow">
+  <h1>Welcome to {{ app_name }}</h1>
+  <p class="muted">Create the administrator account to get started.</p>
+  {% if error %}<div class="flash error" role="alert">{{ error }}</div>{% endif %}
+  <form method="post" action="/setup">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <label>Username
+      <input name="username" value="{{ values.username or '' }}" autocomplete="username" autofocus required>
+    </label>
+    <label>Password <span class="muted">(at least 8 characters)</span>
+      <input type="password" name="password" autocomplete="new-password" required>
+    </label>
+    <label>Repeat password
+      <input type="password" name="confirm" autocomplete="new-password" required>
+    </label>
+    <button type="submit" class="primary">Create administrator</button>
+  </form>
+</section>
+{% endblock %}

@@ -1,0 +1,7 @@
+{% if result.pages > 1 %}
+<nav class="pager" aria-label="Pages">
+  {% if result.has_prev %}<a href="{{ page_url(result.page - 1) }}">&larr; Previous</a>{% endif %}
+  <span>Page {{ result.page }} of {{ result.pages }} ({{ result.total }} total)</span>
+  {% if result.has_next %}<a href="{{ page_url(result.page + 1) }}">Next &rarr;</a>{% endif %}
+</nav>
+{% endif %}

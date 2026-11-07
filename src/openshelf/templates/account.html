@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Account{% endblock %}
+{% block content %}
+<section class="card narrow">
+  <h1>Your account</h1>
+  <p class="muted">Signed in as <strong>{{ user.username }}</strong> ({{ user.role }}).</p>
+  {% if error %}<div class="flash error" role="alert">{{ error }}</div>{% endif %}
+  <form method="post" action="/account">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <h2>Change password</h2>
+    <label>Current password
+      <input type="password" name="current_password" autocomplete="current-password" required>
+    </label>
+    <label>New password <span class="muted">(at least 8 characters)</span>
+      <input type="password" name="new_password" autocomplete="new-password" required>
+    </label>
+    <label>Repeat new password
+      <input type="password" name="confirm" autocomplete="new-password" required>
+    </label>
+    <button type="submit" class="primary">Change password</button>
+  </form>
+</section>
+{% endblock %}

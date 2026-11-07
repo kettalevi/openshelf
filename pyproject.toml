@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "openshelf"
+version = "0.1.0"
+description = "Simple, self-hosted inventory management for small stores."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "AGPL-3.0-or-later"
+license-files = ["LICENSE"]
+authors = [{ name = "kettalevi" }]
+keywords = ["inventory", "stock", "store", "self-hosted", "fastapi"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Framework :: FastAPI",
+    "Intended Audience :: Small Business",
+    "Programming Language :: Python :: 3",
+    "Topic :: Office/Business",
+]
+dependencies = [
+    "fastapi>=0.110",
+    "uvicorn>=0.30",
+    "sqlalchemy>=2.0.30",
+    "jinja2>=3.1",
+    "python-multipart>=0.0.9",
+    "itsdangerous>=2.1",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "httpx>=0.27"]
+
+[project.scripts]
+openshelf = "openshelf.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+openshelf = ["templates/*.html", "static/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

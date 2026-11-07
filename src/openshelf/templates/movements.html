@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Movements{% endblock %}
+{% block content %}
+<h1>Stock movements{% if filtered %}: <a href="/products/{{ filtered.id }}">{{ filtered.name }}</a>{% endif %}</h1>
+{% if filtered %}<p><a href="/movements">Show all products</a></p>{% endif %}
+
+{% if result.items %}
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr><th>When (UTC)</th><th>Product</th><th>Reason</th><th class="num">Change</th><th class="num">After</th><th>By</th><th>Note</th></tr>
+  </thead>
+  <tbody>
+  {% for m in result.items %}
+    <tr>
+      <td>{{ m.created_at|utc }}</td>
+      <td><a href="/products/{{ m.product_id }}">{{ m.product.name }}</a></td>
+      <td>{{ m.reason }}</td>
+      <td class="num {{ 'pos' if m.change > 0 else 'neg' }}">{{ '%+d' % m.change }}</td>
+      <td class="num">{{ m.quantity_after }}</td>
+      <td>{{ m.user.username if m.user else '—' }}</td>
+      <td>{{ m.note }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+{% include "_pagination.html" %}
+{% else %}
+<p class="card muted">No stock movements yet.</p>
+{% endif %}
+{% endblock %}
