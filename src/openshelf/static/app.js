@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-// Copyright (C) 2026 kettalevi
+// Copyright (C) 2026 Martin Levi Ketta
 //
 // Asks for confirmation before submitting any form with a data-confirm
 // attribute. Kept in a file (not inline) so the Content-Security-Policy can

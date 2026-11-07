@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# Copyright (C) 2026 kettalevi
+# Copyright (C) 2026 Martin Levi Ketta
 """Command line interface: ``openshelf run`` and ``openshelf create-admin``."""
 
 from __future__ import annotations

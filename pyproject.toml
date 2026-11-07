@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 license = "AGPL-3.0-or-later"
 license-files = ["LICENSE"]
-authors = [{ name = "kettalevi" }]
+authors = [{ name = "Martin Levi Ketta" }]
 keywords = ["inventory", "stock", "store", "self-hosted", "fastapi"]
 classifiers = [
     "Development Status :: 3 - Alpha",

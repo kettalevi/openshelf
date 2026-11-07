@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# Copyright (C) 2026 kettalevi
+# Copyright (C) 2026 Martin Levi Ketta
 """Products: list, create, edit, stock changes, activate/deactivate, CSV."""
 
 from __future__ import annotations

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# Copyright (C) 2026 kettalevi
+# Copyright (C) 2026 Martin Levi Ketta
 """Request dependencies: database session, authentication, CSRF protection.
 
 Plugins can reuse ``get_db``, ``require_user``, ``require_admin`` and
