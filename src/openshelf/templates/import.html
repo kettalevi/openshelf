@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Import products{% endblock %}
+{% block content %}
+<h1>Import products from CSV</h1>
+
+{% if result and result.errors %}
+<div class="flash error" role="alert">
+  <strong>Nothing was imported.</strong> Fix these problems and try again:
+  <ul>{% for e in result.errors[:50] %}<li>{{ e }}</li>{% endfor %}</ul>
+  {% if result.errors|length > 50 %}<p>…and {{ result.errors|length - 50 }} more.</p>{% endif %}
+</div>
+{% endif %}
+
+<form method="post" action="/products/import" enctype="multipart/form-data" class="card stack">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+  <label>CSV file (UTF-8, up to 2&nbsp;MB / 5,000 rows)
+    <input type="file" name="file" accept=".csv,text/csv" required>
+  </label>
+  <button type="submit" class="primary">Import</button>
+</form>
+
+<section class="card">
+  <h2>File format</h2>
+  <p>The first row must be a header. Required columns: <code>sku</code> and <code>name</code>.
+     Optional columns: {% for c in columns if c not in ('sku', 'name') %}<code>{{ c }}</code>{{ ', ' if not loop.last }}{% endfor %}.</p>
+  <ul>
+    <li>Rows are matched to existing products by SKU: matching products are updated, new SKUs are created.</li>
+    <li>Empty cells leave existing values unchanged.</li>
+    <li>If <code>quantity</code> differs from current stock, the difference is recorded as a stock movement.</li>
+    <li>Categories that do not exist yet are created.</li>
+    <li>If any row has a problem, nothing is imported.</li>
+  </ul>
+  <p>Tip: <a href="/products/export.csv">export your products</a> to get a file in exactly this format.</p>
+</section>
+{% endblock %}

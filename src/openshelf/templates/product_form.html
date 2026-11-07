@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit ' ~ product.name if product else 'Add product' }}{% endblock %}
+{% block content %}
+<h1>{{ 'Edit product' if product else 'Add product' }}</h1>
+
+{% if errors %}
+<div class="flash error" role="alert">
+  <ul>{% for e in errors %}<li>{{ e }}</li>{% endfor %}</ul>
+</div>
+{% endif %}
+
+<form method="post" action="{{ '/products/%d/edit' % product.id if product else '/products' }}" class="card form-grid">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+  <label>Name
+    <input name="name" value="{{ values.name or '' }}" maxlength="200" required autofocus>
+  </label>
+  <label>SKU
+    <input name="sku" value="{{ values.sku or '' }}" maxlength="64" required>
+  </label>
+  <label>Barcode
+    <input name="barcode" value="{{ values.barcode or '' }}" maxlength="64" inputmode="numeric">
+  </label>
+  <label>Category
+    <select name="category_id">
+      <option value="">None</option>
+      {% for c in categories %}
+        <option value="{{ c.id }}" {% if values.category_id == c.id|string %}selected{% endif %}>{{ c.name }}</option>
+      {% endfor %}
+    </select>
+  </label>
+  <label>Selling price ({{ currency }})
+    <input name="price" value="{{ values.price or '' }}" inputmode="decimal" placeholder="0.00">
+  </label>
+  <label>Cost price ({{ currency }})
+    <input name="cost" value="{{ values.cost or '' }}" inputmode="decimal" placeholder="0.00">
+  </label>
+  {% if not product %}
+  <label>Starting quantity
+    <input name="quantity" value="{{ values.quantity or '' }}" inputmode="numeric" placeholder="0">
+  </label>
+  {% endif %}
+  <label>Reorder level <span class="muted">(alert at or below)</span>
+    <input name="reorder_level" value="{{ values.reorder_level or '' }}" inputmode="numeric" placeholder="0">
+  </label>
+  <label>Unit
+    <input name="unit" value="{{ values.unit or 'pcs' }}" maxlength="32">
+  </label>
+  <label class="wide">Description
+    <textarea name="description" rows="3">{{ values.description or '' }}</textarea>
+  </label>
+  <div class="wide actions">
+    <button type="submit" class="primary">Save</button>
+    <a class="button" href="{{ '/products/%d' % product.id if product else '/products' }}">Cancel</a>
+  </div>
+</form>
+{% endblock %}

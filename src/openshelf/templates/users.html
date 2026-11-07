@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Users{% endblock %}
+{% block content %}
+<h1>Users</h1>
+
+<form method="post" action="/users" class="card form-grid">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+  <h2 class="wide">Add a user</h2>
+  <label>Username
+    <input name="username" autocomplete="off" required>
+  </label>
+  <label>Password <span class="muted">(at least 8 characters)</span>
+    <input type="password" name="password" autocomplete="new-password" required>
+  </label>
+  <label>Role
+    <select name="role">
+      {% for r in roles %}<option value="{{ r }}" {% if r == 'staff' %}selected{% endif %}>{{ r|capitalize }}</option>{% endfor %}
+    </select>
+  </label>
+  <div class="wide actions"><button type="submit" class="primary">Create user</button></div>
+</form>
+
+<p class="muted">Staff can view everything, add and edit products and change stock. Administrators can also manage categories, users, imports and deactivate products.</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Username</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead>
+  <tbody>
+  {% for u in users %}
+    <tr {% if not u.is_active %}class="inactive"{% endif %}>
+      <td>{{ u.username }}{% if u.id == user.id %} <span class="badge">you</span>{% endif %}</td>
+      <td>
+        <form method="post" action="/users/{{ u.id }}/role" class="inline">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+          <select name="role" aria-label="Role for {{ u.username }}">
+            {% for r in roles %}<option value="{{ r }}" {% if r == u.role %}selected{% endif %}>{{ r|capitalize }}</option>{% endfor %}
+          </select>
+          <button type="submit">Set</button>
+        </form>
+      </td>
+      <td>{{ 'Active' if u.is_active else 'Deactivated' }}</td>
+      <td>
+        <form method="post" action="/users/{{ u.id }}/active" class="inline">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+          <input type="hidden" name="active" value="{{ '0' if u.is_active else '1' }}">
+          <button type="submit">{{ 'Deactivate' if u.is_active else 'Activate' }}</button>
+        </form>
+        <form method="post" action="/users/{{ u.id }}/password" class="inline">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+          <input type="password" name="password" placeholder="New password" autocomplete="new-password" aria-label="New password for {{ u.username }}" required>
+          <button type="submit">Reset password</button>
+        </form>
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}

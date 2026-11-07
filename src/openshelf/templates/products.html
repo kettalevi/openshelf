@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Products{% endblock %}
+{% block content %}
+<div class="page-head">
+  <h1>Products</h1>
+  <div class="actions">
+    <a class="button" href="/products/export.csv">Export CSV</a>
+    {% if user.is_admin %}<a class="button" href="/products/import">Import CSV</a>{% endif %}
+    <a class="button primary" href="/products/new">Add product</a>
+  </div>
+</div>
+
+<form method="get" action="/products" class="filters">
+  <input type="search" name="q" value="{{ q }}" placeholder="Search name, SKU or barcode">
+  <select name="category" aria-label="Category">
+    <option value="">All categories</option>
+    {% for c in categories %}
+      <option value="{{ c.id }}" {% if category == c.id %}selected{% endif %}>{{ c.name }}</option>
+    {% endfor %}
+  </select>
+  <label class="check"><input type="checkbox" name="low" value="1" {% if low %}checked{% endif %}> Low stock only</label>
+  <label class="check"><input type="checkbox" name="inactive" value="1" {% if inactive %}checked{% endif %}> Include inactive</label>
+  <button type="submit">Filter</button>
+</form>
+
+{% if result.items %}
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr><th>Name</th><th>SKU</th><th>Category</th><th class="num">Price</th><th class="num">On hand</th><th></th></tr>
+  </thead>
+  <tbody>
+  {% for p in result.items %}
+    <tr {% if not p.is_active %}class="inactive"{% endif %}>
+      <td><a href="/products/{{ p.id }}">{{ p.name }}</a>{% if not p.is_active %} <span class="badge">inactive</span>{% endif %}</td>
+      <td>{{ p.sku }}</td>
+      <td>{{ p.category.name if p.category else '—' }}</td>
+      <td class="num">{{ currency }}{{ p.price_cents|money }}</td>
+      <td class="num">{{ p.quantity }} {{ p.unit }}</td>
+      <td>{% if p.low_stock %}<span class="badge warn">{{ 'out' if p.quantity == 0 else 'low' }}</span>{% endif %}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+{% include "_pagination.html" %}
+{% else %}
+<p class="card muted">No products match. <a href="/products/new">Add one</a>{% if user.is_admin %} or <a href="/products/import">import a CSV</a>{% endif %}.</p>
+{% endif %}
+{% endblock %}

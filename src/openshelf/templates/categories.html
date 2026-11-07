@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Categories{% endblock %}
+{% block content %}
+<h1>Categories</h1>
+
+{% if user.is_admin %}
+<form method="post" action="/categories" class="card inline-form">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+  <label>New category
+    <input name="name" maxlength="100" required>
+  </label>
+  <button type="submit" class="primary">Add</button>
+</form>
+{% endif %}
+
+{% if rows %}
+<table>
+  <thead><tr><th>Name</th><th class="num">Products</th><th></th></tr></thead>
+  <tbody>
+  {% for category, count in rows %}
+    <tr>
+      <td><a href="/products?category={{ category.id }}">{{ category.name }}</a></td>
+      <td class="num">{{ count }}</td>
+      <td class="num">
+        {% if user.is_admin %}
+        <form method="post" action="/categories/{{ category.id }}/delete" class="inline"
+              data-confirm="Delete the category '{{ category.name }}'? Its products will become uncategorised.">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+          <button type="submit" class="link danger">Delete</button>
+        </form>
+        {% endif %}
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="card muted">No categories yet.</p>
+{% endif %}
+{% endblock %}

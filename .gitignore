@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+.pytest_cache/
+.coverage
+
+# OpenShelf runtime data: never commit databases or the session secret
+data/
+*.db
+*.db-wal
+*.db-shm
+secret.key
+
+# Editors / OS
+.idea/
+.vscode/
+.DS_Store

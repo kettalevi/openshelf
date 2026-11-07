@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h1>Dashboard</h1>
+
+<div class="stats">
+  <div class="stat"><span class="num">{{ product_count }}</span><span class="label">Active products</span></div>
+  <div class="stat"><span class="num">{{ units }}</span><span class="label">Units in stock</span></div>
+  <div class="stat"><span class="num">{{ currency }}{{ cost_value|money }}</span><span class="label">Stock value (cost)</span></div>
+  <div class="stat"><span class="num">{{ currency }}{{ retail_value|money }}</span><span class="label">Stock value (retail)</span></div>
+  <div class="stat {% if low_total %}warn{% endif %}"><span class="num">{{ low_total }}</span><span class="label">Low or out of stock</span></div>
+</div>
+
+<div class="grid">
+  <section class="card">
+    <h2>Needs restocking</h2>
+    {% if low_stock %}
+    <table>
+      <thead><tr><th>Product</th><th class="num">On hand</th><th class="num">Reorder at</th></tr></thead>
+      <tbody>
+      {% for p in low_stock %}
+        <tr>
+          <td><a href="/products/{{ p.id }}">{{ p.name }}</a> <span class="muted">{{ p.sku }}</span></td>
+          <td class="num">{{ p.quantity }}</td>
+          <td class="num">{{ p.reorder_level }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    {% if low_total > low_stock|length %}
+      <p><a href="/products?low=1">See all {{ low_total }}</a></p>
+    {% endif %}
+    {% else %}
+      <p class="muted">Nothing is running low.</p>
+    {% endif %}
+  </section>
+
+  <section class="card">
+    <h2>Recent activity</h2>
+    {% if recent %}
+    <table>
+      <thead><tr><th>When (UTC)</th><th>Product</th><th class="num">Change</th><th>By</th></tr></thead>
+      <tbody>
+      {% for m in recent %}
+        <tr>
+          <td>{{ m.created_at|utc }}</td>
+          <td><a href="/products/{{ m.product_id }}">{{ m.product.name }}</a></td>
+          <td class="num {{ 'pos' if m.change > 0 else 'neg' }}">{{ '%+d' % m.change }}</td>
+          <td>{{ m.user.username if m.user else '—' }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    <p><a href="/movements">All movements</a></p>
+    {% else %}
+      <p class="muted">No stock changes yet. <a href="/products/new">Add a product</a> to begin.</p>
+    {% endif %}
+  </section>
+</div>
+
+{% for widget in widgets %}{% include widget %}{% endfor %}
+{% endblock %}
